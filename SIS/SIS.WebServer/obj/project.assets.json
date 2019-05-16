@@ -694,11 +694,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\emile\\source\\repos\\SIS\\SIS.WebServer\\SIS.WebServer.csproj",
+      "projectUniqueName": "C:\\Users\\emile\\Desktop\\C# Web Development\\C-Web\\SIS\\SIS.WebServer\\SIS.WebServer.csproj",
       "projectName": "SIS.WebServer",
-      "projectPath": "C:\\Users\\emile\\source\\repos\\SIS\\SIS.WebServer\\SIS.WebServer.csproj",
+      "projectPath": "C:\\Users\\emile\\Desktop\\C# Web Development\\C-Web\\SIS\\SIS.WebServer\\SIS.WebServer.csproj",
       "packagesPath": "C:\\Users\\emile\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\emile\\source\\repos\\SIS\\SIS.WebServer\\obj\\",
+      "outputPath": "C:\\Users\\emile\\Desktop\\C# Web Development\\C-Web\\SIS\\SIS.WebServer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

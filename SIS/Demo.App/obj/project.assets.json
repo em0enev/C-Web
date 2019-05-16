@@ -207,6 +207,16 @@
         "build": {
           "build/netstandard2.0/NETStandard.Library.targets": {}
         }
+      },
+      "SIS.HTTP/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.1",
+        "compile": {
+          "bin/placeholder/SIS.HTTP.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SIS.HTTP.dll": {}
+        }
       }
     }
   },
@@ -680,11 +690,17 @@
         "netstandard.library.2.0.3.nupkg.sha512",
         "netstandard.library.nuspec"
       ]
+    },
+    "SIS.HTTP/1.0.0": {
+      "type": "project",
+      "path": "../SIS.HTTP/SIS.HTTP.csproj",
+      "msbuildProject": "../SIS.HTTP/SIS.HTTP.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
-      "Microsoft.NETCore.App >= 2.1.0"
+      "Microsoft.NETCore.App >= 2.1.0",
+      "SIS.HTTP >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -694,11 +710,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\emile\\Desktop\\C# Web Development\\C-Web\\SIS\\SIS.HTTP\\SIS.HTTP.csproj",
-      "projectName": "SIS.HTTP",
-      "projectPath": "C:\\Users\\emile\\Desktop\\C# Web Development\\C-Web\\SIS\\SIS.HTTP\\SIS.HTTP.csproj",
+      "projectUniqueName": "C:\\Users\\emile\\Desktop\\C# Web Development\\C-Web\\SIS\\Demo.App\\Demo.App.csproj",
+      "projectName": "Demo.App",
+      "projectPath": "C:\\Users\\emile\\Desktop\\C# Web Development\\C-Web\\SIS\\Demo.App\\Demo.App.csproj",
       "packagesPath": "C:\\Users\\emile\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\emile\\Desktop\\C# Web Development\\C-Web\\SIS\\SIS.HTTP\\obj\\",
+      "outputPath": "C:\\Users\\emile\\Desktop\\C# Web Development\\C-Web\\SIS\\Demo.App\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -716,7 +732,11 @@
       },
       "frameworks": {
         "netcoreapp2.1": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\emile\\Desktop\\C# Web Development\\C-Web\\SIS\\SIS.HTTP\\SIS.HTTP.csproj": {
+              "projectPath": "C:\\Users\\emile\\Desktop\\C# Web Development\\C-Web\\SIS\\SIS.HTTP\\SIS.HTTP.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -729,7 +749,6 @@
       "netcoreapp2.1": {
         "dependencies": {
           "Microsoft.NETCore.App": {
-            "suppressParent": "All",
             "target": "Package",
             "version": "[2.1.0, )",
             "autoReferenced": true

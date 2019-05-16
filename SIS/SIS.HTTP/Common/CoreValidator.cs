@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SIS.HTTP.Common
 {
@@ -8,14 +6,17 @@ namespace SIS.HTTP.Common
     {
         public static void ThrowIfNull(object obj, string name)
         {
-            throw new ArgumentNullException(name);
+            if (obj == null || name == null)
+            {
+                throw new ArgumentNullException(name);
+            }
         }
 
         public static void ThrowIfNullOrEmpty(string text, string name)
         {
             if (string.IsNullOrEmpty(text))
             {
-                throw new ArgumentNullException(message: $"{name} cannot be null or empty." ,paramName: name);
+                throw new ArgumentNullException(message: $"{name} cannot be null or empty.", paramName: name);
             }
         }
     }

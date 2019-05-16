@@ -7,7 +7,6 @@ using SIS.HTTP.Requests.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SIS.HTTP.Requests
 {
@@ -20,7 +19,7 @@ namespace SIS.HTTP.Requests
             this.QueryData = new Dictionary<string, object>();
             this.Headers = new HttpHeaderCollection();
 
-
+            this.ParseRequest(requestString);
         }
 
         public string Path { get; private set; }
@@ -56,7 +55,7 @@ namespace SIS.HTTP.Requests
             string requestMethod = requestLineParams[0];
             HttpRequestMethod method;
 
-            bool parseResult = HttpRequestMethod.TryParse(requestMethod, out method);
+            bool parseResult = HttpRequestMethod.TryParse(requestMethod, true, out method);
             if (!parseResult)
             {
                 throw new BadRequestException(string.Format(GlobalConstants.UnsupportedHttpMethodExceptionMessage, requestMethod));
@@ -75,9 +74,49 @@ namespace SIS.HTTP.Requests
             this.Path = this.Url.Split('?')[0];
         }
 
-        private ParseHeader(string[] plainHeaders)
+        private void ParseRequestHeader(string[] plainHeaders)
         {
+            var splitted = plainHeaders
+                .Select(plainHeader => plainHeader
+                .Split(": ", StringSplitOptions.RemoveEmptyEntries))
+                .ToList();
 
+            foreach (var kvp in splitted)
+            {
+                if (kvp.Length == 2)
+                {
+                    this.Headers.AddHeader(new HttpHeader(kvp[0], kvp[1]));
+                }
+            }
+        }
+
+        private void ParseRequestParameters(string requestBody)
+        {
+            this.ParseRequestQueryParameters(requestBody);
+            this.ParseRequestFormDataParameters(requestBody);
+        }
+
+        private void ParseRequestQueryParameters(string requestBody)
+        {
+            this.Url
+                .Split(new char[] { '?' }, StringSplitOptions.RemoveEmptyEntries)[1]
+                .Split('&')
+                .Select(plainQueryParameter => plainQueryParameter.Split('='))
+                .ToList()
+                .ForEach(queryParameterKVP => this.QueryData.Add(queryParameterKVP[0], queryParameterKVP[1]));
+        }
+
+        private void ParseRequestFormDataParameters(string requestBody)
+        {
+            requestBody
+                .Split('&')
+                .Select(plainQueryParameter => plainQueryParameter.Split('='))
+                .ToList()
+                .ForEach(queryParameterKVP => this.FormData.Add(queryParameterKVP[0], queryParameterKVP[1]));
+
+            //THERE IS A BUUUUUUUUUUUUUUUUG !!!! 
+            //Parse Multiple Parameters By Name 
+            //cars=volvo&cars=opel  => ICollection<cars> .... 
         }
 
         private void ParseRequest(string requestString)
@@ -95,10 +134,10 @@ namespace SIS.HTTP.Requests
             this.ParseRequestUrl(requestLineParams);
             this.ParseRequestPath();
 
-            this.ParseHeader(splitRequestString.Skip(1).ToArray());
+            this.ParseRequestHeader(splitRequestString.Skip(1).ToArray());
             //this.parseCookies();
 
-            this.parseRequestParameters(splitRequestString[splitRequestString.Length - 1]);
+            this.ParseRequestParameters(splitRequestString[splitRequestString.Length - 1]);
         }
     }
 }
