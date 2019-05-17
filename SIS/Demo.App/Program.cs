@@ -1,5 +1,14 @@
-﻿using SIS.HTTP.Requests;
+﻿using SIS.HTTP.Enums;
+using SIS.HTTP.Headers;
+using SIS.HTTP.Requests;
+using SIS.HTTP.Responses;
+using SIS.WebServer;
+using SIS.WebServer.Result;
+using SIS.WebServer.Routing;
+using SIS.WebServer.Routing.Contracts;
 using System;
+using System.Collections;
+using System.Text;
 
 namespace Demo.App
 {
@@ -27,9 +36,15 @@ namespace Demo.App
  licenseID=string&content=string&/paramsXML=string";
 
 
-            HttpRequest httpRequest = new HttpRequest(request);
+            IServerRoutingTable serverRoutingTable = new ServerRoutingTable();
+            serverRoutingTable.Add(HttpRequestMethod.Get, "/", httprequest =>
+            {
+                return new HtmlResult("<h1>Hello World!</h1>", HttpResponseStatusCode.Ok);
+            });
 
-            ;
+
+            Server server = new Server(8000, serverRoutingTable);
+            server.Run();
         }
     }
 }

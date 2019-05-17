@@ -12,3 +12,5 @@ C:\Users\emile\Desktop\C# Web Development\C-Web\SIS\Demo.App\obj\Debug\netcoreap
 C:\Users\emile\Desktop\C# Web Development\C-Web\SIS\Demo.App\obj\Debug\netcoreapp2.1\Demo.App.csproj.CopyComplete
 C:\Users\emile\Desktop\C# Web Development\C-Web\SIS\Demo.App\obj\Debug\netcoreapp2.1\Demo.App.dll
 C:\Users\emile\Desktop\C# Web Development\C-Web\SIS\Demo.App\obj\Debug\netcoreapp2.1\Demo.App.pdb
+C:\Users\emile\Desktop\C# Web Development\C-Web\SIS\Demo.App\bin\Debug\netcoreapp2.1\SIS.WebServer.dll
+C:\Users\emile\Desktop\C# Web Development\C-Web\SIS\Demo.App\bin\Debug\netcoreapp2.1\SIS.WebServer.pdb
