@@ -53,7 +53,7 @@ namespace SIS.HTTP.Requests
             // TODO => Regex query string
         }
 
-        private void ParseRequestMethod(string[] requestLineParams)
+        private void ParseRequestMethod(string[] requestLineParams) // pass only firs element from this arrAyyyy
         {
             string requestMethod = requestLineParams[0];
             HttpRequestMethod method;
@@ -95,20 +95,35 @@ namespace SIS.HTTP.Requests
 
         private void ParseRequestParameters(string requestBody)
         {
-            this.ParseRequestQueryParameters(requestBody);
+            this.ParseRequestQueryParameters();
             this.ParseRequestFormDataParameters(requestBody);
         }
 
-        private void ParseRequestQueryParameters(string requestBody)
+        private void ParseRequestQueryParameters()
         {
             if (this.HasQueryString())
             {
-                this.Url
-                    .Split(new char[] { '?' }, StringSplitOptions.RemoveEmptyEntries)[1]
+                var queryParams = this.Url
+                    .Split('?', StringSplitOptions.RemoveEmptyEntries)[1]
                     .Split('&')
                     .Select(plainQueryParameter => plainQueryParameter.Split('='))
-                    .ToList()
-                    .ForEach(queryParameterKVP => this.QueryData.Add(queryParameterKVP[0], queryParameterKVP[1]));
+                    .ToList();
+
+                foreach (var param in queryParams)
+                {
+                    if (!this.QueryData.ContainsKey(param[0]))
+                    {
+                        this.QueryData.Add(param[0], new HashSet<string>());
+                        var collection = (ICollection<string>)QueryData[param[0]];
+                        collection.Add(param[1]);
+                    }
+                    else
+                    {
+                        var collection = (ICollection<string>)QueryData[param[0]];
+                        collection.Add(param[1]);
+                    }
+                }
+                ;
             }
         }
 
@@ -122,15 +137,12 @@ namespace SIS.HTTP.Requests
             if (!string.IsNullOrEmpty(requestBody))
             {
                 requestBody
-                    .Split('&')
-                    .Select(plainQueryParameter => plainQueryParameter.Split('='))
-                    .ToList()
-                    .ForEach(queryParameterKVP => this.FormData.Add(queryParameterKVP[0], queryParameterKVP[1]));
+                     .Split('&')
+                     .Select(plainQueryParameter => plainQueryParameter.Split('='))
+                     .ToList()
+                     .ForEach(queryParameterKVP =>
+                        this.FormData.Add(queryParameterKVP[0], queryParameterKVP[1]));
             }
-
-            //THERE IS A BUUUUUUUUUUUUUUUUG !!!
-            //Parse Multiple Parameters By Name 
-            //cars=volvo&cars=opel  => ICollection<cars> .... 
         }
 
         private void ParseRequest(string requestString)

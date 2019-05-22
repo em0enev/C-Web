@@ -9,6 +9,7 @@ using SIS.WebServer.Routing.Contracts;
 using System;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SIS.WebServer
 {
@@ -27,11 +28,11 @@ namespace SIS.WebServer
             this.serverRoutingTable = serverRoutingTable;
         }
 
-        public void ProcessRequest()
+        public async Task ProcessRequestAsync()
         {
             try
             {
-                var httpRequest = this.ReadRequest();
+                var httpRequest = await this.ReadRequest();
 
                 if (httpRequest != null)
                 {
@@ -39,29 +40,29 @@ namespace SIS.WebServer
 
                     var httpResponse = this.HandlerRequest(httpRequest);
 
-                    this.PrepareResponse(httpResponse);
+                    await this.PrepareResponse(httpResponse);
                 }
             }
             catch (BadRequestException e)
             {
-                this.PrepareResponse(new TextResult(e.ToString(), HttpResponseStatusCode.BadRequest));
+              await this.PrepareResponse(new TextResult(e.ToString(), HttpResponseStatusCode.BadRequest));
             }
             catch (Exception e)
             {
-                this.PrepareResponse(new TextResult(e.ToString(), HttpResponseStatusCode.InternalServerError));
+               await this.PrepareResponse(new TextResult(e.ToString(), HttpResponseStatusCode.InternalServerError));
             }
 
             this.client.Shutdown(SocketShutdown.Both);
         }
 
-        private IHttpRequest ReadRequest()
+        private async Task<IHttpRequest> ReadRequest()
         {
             var result = new StringBuilder();
             var data = new ArraySegment<byte>(new byte[1024]);
 
             while (true)
             {
-                int numberOfBytesRead = this.client.Receive(data.Array, SocketFlags.None);
+                int numberOfBytesRead = await this.client.ReceiveAsync(data.Array, SocketFlags.None);
 
                 if (numberOfBytesRead == 0)
                 {
@@ -94,12 +95,12 @@ namespace SIS.WebServer
             return this.serverRoutingTable.Get(request.RequestMethod, request.Path).Invoke(request);
         }
 
-        private void PrepareResponse(IHttpResponse response)
+        private async Task PrepareResponse(IHttpResponse response)
         {
             // prepares response -> maps it to byte data
             byte[] byteSegments = response.GetBytes();
 
-            this.client.Send(byteSegments, SocketFlags.None);
+            await this.client.SendAsync(byteSegments, SocketFlags.None);
         }
     }
 }

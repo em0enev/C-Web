@@ -3,6 +3,7 @@ using SIS.WebServer.Routing.Contracts;
 using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace SIS.WebServer
 {
@@ -39,15 +40,15 @@ namespace SIS.WebServer
 
                 var client = this.tcpListener.AcceptSocket();
 
-                this.Listener(client);
+                Task.Run(() => this.Listener(client));
             }
         }
 
-        public void Listener(Socket client)
+        public async Task Listener(Socket client)
         {
             var connectionHandler = new ConnectionHandler(client, this.serverRoutingTable);
 
-            connectionHandler.ProcessRequest();
+           await  connectionHandler.ProcessRequestAsync();
         }
     }
 }

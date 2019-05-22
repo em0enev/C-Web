@@ -37,7 +37,7 @@ namespace Demo.App
 
 
             IServerRoutingTable serverRoutingTable = new ServerRoutingTable();
-            serverRoutingTable.Add(HttpRequestMethod.Get, "/", httprequest =>
+            serverRoutingTable.Add(HttpRequestMethod.Post, "/?name=dsad&name=dsaw", httprequest =>
             {
                 return new HtmlResult("<h1>Hello World!</h1>", HttpResponseStatusCode.Ok);
             });
