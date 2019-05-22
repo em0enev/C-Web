@@ -39,19 +39,19 @@ namespace SIS.HTTP.Responses
         {
             byte[] httpResponseBytesWithoutBody =  Encoding.UTF8.GetBytes(this.ToString()); // maybe remove ? 
 
-            byte[] httpResponseBytesWithBody = new byte[httpResponseBytesWithoutBody.Length + this.Content.Length];
+            //byte[] httpResponseBytesWithBody = new byte[httpResponseBytesWithoutBody.Length + this.Content.Length];
 
-            for (int i = 0; i < httpResponseBytesWithoutBody.Length; i++)
-            {
-                httpResponseBytesWithBody[i] = httpResponseBytesWithoutBody[i];
-            }
+            //for (int i = 0; i < httpResponseBytesWithoutBody.Length; i++)
+            //{
+            //    httpResponseBytesWithBody[i] = httpResponseBytesWithoutBody[i];
+            //}
 
-            for (int i = 0; i < httpResponseBytesWithBody.Length- httpResponseBytesWithoutBody.Length; i++)
-            {
-                httpResponseBytesWithBody[i + httpResponseBytesWithoutBody.Length] = this.Content[i];
-            }
+            //for (int i = 0; i < httpResponseBytesWithBody.Length- httpResponseBytesWithoutBody.Length; i++)
+            //{
+            //    httpResponseBytesWithBody[i + httpResponseBytesWithoutBody.Length] = this.Content[i];
+            //}
 
-            return httpResponseBytesWithBody;
+            return httpResponseBytesWithoutBody;
         }
 
         public override string ToString()

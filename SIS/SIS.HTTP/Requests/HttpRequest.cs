@@ -53,7 +53,7 @@ namespace SIS.HTTP.Requests
             // TODO => Regex query string
         }
 
-        private void ParseRequestMethod(string[] requestLineParams) // pass only firs element from this arrAyyyy
+        private void ParseRequestMethod(string[] requestLineParams) 
         {
             string requestMethod = requestLineParams[0];
             HttpRequestMethod method;
@@ -123,7 +123,6 @@ namespace SIS.HTTP.Requests
                         collection.Add(param[1]);
                     }
                 }
-                ;
             }
         }
 
