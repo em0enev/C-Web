@@ -31,8 +31,10 @@ namespace IRunes.App.Controllers
                 }
                 else
                 {
-                    this.ViewData["Albums"] = string.Join("<br />",
-                        context.Albums.Select(album => album.ToHtmlAll()).ToList());
+                    this.ViewData["Albums"] = string.Join("",
+                        context.Albums
+                            .Select(album => album.ToHtmlAll())
+                            .ToList());
                 }
 
                 return this.View();
@@ -97,7 +99,7 @@ namespace IRunes.App.Controllers
 
                 this.ViewData["Album"] = albumFromDb.ToHtmlDetails();
             }
-            
+
 
             return this.View();
 
