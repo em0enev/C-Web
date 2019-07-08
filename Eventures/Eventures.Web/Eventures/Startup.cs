@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Eventures.Data;
+using Eventures.Data.Seeding;
 using Eventures.Domain;
+using Eventures.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +33,10 @@ namespace Eventures
             services.AddDbContext<EventuresDbContext>(options =>
                 options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddScoped<EventuresUserRoleSeeder>();
+            services.AddScoped<EventuresAdminUserSeeder>();
+
+
             services.AddIdentity<EventuresUser, IdentityRole>()
                 .AddEntityFrameworkStores<EventuresDbContext>()
                 .AddDefaultTokenProviders();
@@ -55,14 +61,7 @@ namespace Eventures
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
 
-            using (var serviceScope = app.ApplicationServices.CreateScope())
-            {
-                using (var context = serviceScope.ServiceProvider.GetRequiredService<EventuresDbContext>())
-                {
-                    //context.Database.EnsureDeleted();
-                    context.Database.EnsureCreated();
-                }
-            }
+            app.UseDatabaseSeeding();
 
             app.UseDeveloperExceptionPage();
             app.UseHttpsRedirection();

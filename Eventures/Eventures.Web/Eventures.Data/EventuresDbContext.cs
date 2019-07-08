@@ -20,5 +20,7 @@ namespace Eventures.Data
         {
             base.OnConfiguring(optionsBuilder);
         }
+
+        public DbSet<Event> Events { get; set; }
     }
 }

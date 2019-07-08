@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Eventures.Areas.Identity.Pages.Account
@@ -85,8 +86,19 @@ namespace Eventures.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    if (_userManager.Users.Count() == 1)
+                    {
+                        await _userManager.AddToRoleAsync(user, "Admin");
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, "User");
+
+                    }
+
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
+
+                    return LocalRedirect("/Identity/Account/Login");
                 }
                 foreach (var error in result.Errors)
                 {
