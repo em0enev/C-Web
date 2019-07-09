@@ -9,24 +9,31 @@ namespace Eventures.Data.Seeding
 {
     public class EventuresUserRoleSeeder : ISeeder
     {
-        public void Seed(EventuresDbContext context)
+        private readonly EventuresDbContext context;
+
+        public EventuresUserRoleSeeder(EventuresDbContext context)
+        {
+            this.context = context;
+        }
+
+        public async Task Seed()
         {
             if (!context.Roles.Any())
             {
-                context.Roles.Add(new IdentityRole()
+                context.Roles.Add(new IdentityRole
                 {
                     Name = "Admin",
                     NormalizedName = "ADMIN"
                 });
 
-                context.Roles.Add(new IdentityRole()
+                context.Roles.Add(new IdentityRole
                 {
                     Name = "User",
                     NormalizedName = "USER"
                 });
-
-                context.SaveChanges();
             }
+
+           await context.SaveChangesAsync();
         }
     }
 }

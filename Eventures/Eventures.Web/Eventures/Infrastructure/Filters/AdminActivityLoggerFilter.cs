@@ -21,7 +21,7 @@ namespace Eventures.Infrastructure.Filters
             if (context.ActionDescriptor.DisplayName.Contains("EventsController") &&
                 context.ActionDescriptor.DisplayName.Contains("Create"))
             {
-
+                this.logger.LogInformation("Mina"); 
             }
         }
 

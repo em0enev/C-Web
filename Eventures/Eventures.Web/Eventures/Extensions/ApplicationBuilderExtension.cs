@@ -23,7 +23,7 @@ namespace Eventures.Extensions
                     .Where(x => x.IsClass)
                     .Select(x => (ISeeder)serviceScope.ServiceProvider.GetRequiredService(x))
                     .ToList()
-                    .ForEach( x =>  x.Seed(context));
+                    .ForEach(seeder => seeder.Seed().GetAwaiter().GetResult());
             }
         }
     }
