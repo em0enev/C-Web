@@ -18,19 +18,19 @@ namespace Eventures.Data.Seeding
 
         public async Task Seed()
         {
-            var user = new EventuresUser
-            {
-                UserName = "root",
-                Email = "root@eventures.com",
-                FirstName = "Root",
-                LastName = "Root",
-                UCN = "ROOT"
-            };
+            //var user = new EventuresUser
+            //{
+            //    UserName = "root",
+            //    Email = "root@eventures.com",
+            //    FirstName = "Root",
+            //    LastName = "Root",
+            //    UCN = "ROOT"
+            //};
 
-            var createUserResult = await this.userManager.CreateAsync(user, "root");
-            var setUserToRoleResult = await this.userManager.AddToRoleAsync(user, "Admin");
+            //var createUserResult = await this.userManager.CreateAsync(user, "root");
+            //var setUserToRoleResult = await this.userManager.AddToRoleAsync(user, "Admin");
 
-            ;
+            //;
         }
     }
 }
