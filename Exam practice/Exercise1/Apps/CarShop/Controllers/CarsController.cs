@@ -27,7 +27,7 @@ namespace CarShop.Controllers
                 var currentClientCars = this.carsService.GetAllCarsForCurrentClient(this.GetUserId());
                 return this.View(currentClientCars);
             }
-
+            // TODO: CREATE VIEW FOR MECHANIC
             return this.View();
         }
 
