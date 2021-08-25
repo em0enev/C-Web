@@ -39,14 +39,22 @@ namespace CarShop.Services
                 .Where(x => x.Id.ToString() == issueId)
                 .FirstOrDefault();
 
-
             this.db.Issues.Remove(issueForDelete);
             this.db.SaveChanges();
         }
 
         public void FixIssue(string issueId, string carId)
         {
-            throw new NotImplementedException();
+            var issue = this.db.Cars
+                .Where(c => c.Id.ToString() == carId)
+                .SelectMany(i => i.Issues)
+                .Where(x => x.Id.ToString() == issueId)
+                .FirstOrDefault();
+
+            issue.IsFixed = true;
+
+            this.db.Update(issue);
+            this.db.SaveChanges();
         }
 
         public IssuesSummaryViewModel GetIssuesForCurrentCar(string carId)

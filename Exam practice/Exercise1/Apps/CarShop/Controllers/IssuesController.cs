@@ -17,6 +17,7 @@ namespace CarShop.Controllers
             this.issuesService = issuesService;
         }
 
+        [HttpGet]
         public HttpResponse Add(string carId)
         {
             return this.View(carId);
@@ -40,6 +41,14 @@ namespace CarShop.Controllers
         public HttpResponse Delete(string issueId, string carId)
         {
             this.issuesService.DeleteIssue(issueId, carId);
+
+            return this.Redirect($"/Issues/CarIssues?CarId={carId}");
+        }
+
+        [HttpGet]
+        public HttpResponse Fix(string issueId, string carId)
+        {
+            this.issuesService.FixIssue(issueId, carId);
 
             return this.Redirect($"/Issues/CarIssues?CarId={carId}");
         }
