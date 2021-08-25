@@ -2,19 +2,21 @@
 using CarShop.ViewModels.Issue;
 using SUS.HTTP;
 using SUS.MvcFramework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CarShop.Controllers
 {
     class IssuesController : Controller
     {
         private readonly IIssuesService issuesService;
+        private readonly IUsersService usersService;
+        private readonly string carIssuesPath = $"/Issues/CarIssues?CarId=";
+        private const string DeleteIssueErrMsg = "Only clients can delete issues";
+        private const string FixIssueErrMsg = "Only mechanics can fix issues";
 
-        public IssuesController(IIssuesService issuesService)
+        public IssuesController(IIssuesService issuesService, IUsersService usersService)
         {
             this.issuesService = issuesService;
+            this.usersService = usersService;
         }
 
         [HttpGet]
@@ -27,7 +29,7 @@ namespace CarShop.Controllers
         public HttpResponse Add(AddIssueInputModel input)
         {
             this.issuesService.Add(input);
-            return this.Redirect($"/Issues/CarIssues?CarId={input.CarId}");
+            return this.Redirect(carIssuesPath + input.CarId);
         }
 
         [HttpGet]
@@ -40,17 +42,27 @@ namespace CarShop.Controllers
         [HttpGet]
         public HttpResponse Delete(string issueId, string carId)
         {
+            if (usersService.IsUserMechanic(this.GetUserId()))
+            {
+                return this.Error(DeleteIssueErrMsg);
+            }
+
             this.issuesService.DeleteIssue(issueId, carId);
 
-            return this.Redirect($"/Issues/CarIssues?CarId={carId}");
+            return this.Redirect(carIssuesPath + carId);
         }
 
         [HttpGet]
         public HttpResponse Fix(string issueId, string carId)
         {
+            if (!usersService.IsUserMechanic(this.GetUserId()))
+            {
+                return this.Error(FixIssueErrMsg);
+            }
+
             this.issuesService.FixIssue(issueId, carId);
 
-            return this.Redirect($"/Issues/CarIssues?CarId={carId}");
+            return this.Redirect(carIssuesPath + carId);
         }
     }
 }
