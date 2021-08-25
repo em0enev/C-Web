@@ -9,6 +9,7 @@ namespace CarShop.Controllers
     public class UsersController : Controller
     {
         private readonly IUsersService userService;
+        private const string CarsAllPath = "/Cars/All";
 
         public UsersController(IUsersService userService)
         {
@@ -19,6 +20,11 @@ namespace CarShop.Controllers
         [HttpGet]
         public HttpResponse Login()
         {
+            if (this.IsUserSignedIn())
+            {
+                this.Redirect(CarsAllPath);
+            }
+
             return this.View();
         }
 
@@ -41,6 +47,11 @@ namespace CarShop.Controllers
         [HttpGet]
         public HttpResponse Register()
         {
+            if (this.IsUserSignedIn())
+            {
+                this.Redirect(CarsAllPath);
+            }
+
             return this.View();
         }
 
@@ -49,12 +60,12 @@ namespace CarShop.Controllers
         {
             if (!ModelStateValidator.IsValid(model))
             {
-                return this.Redirect("/Users/Register");
+                return this.View();
             }
 
             this.userService.Create(model.Username, model.Email, model.Password, model.UserType);
 
-            return this.Redirect("Login");
+            return this.Redirect(nameof(this.Login));
         }
 
         //Logout
