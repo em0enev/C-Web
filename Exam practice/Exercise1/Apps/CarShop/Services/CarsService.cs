@@ -4,7 +4,6 @@ using CarShop.ViewModels.Car;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CarShop.Services
 {
@@ -18,7 +17,18 @@ namespace CarShop.Services
         }
         public IEnumerable<CarViewModel> GetAllCarsWithUnfixedIssues()
         {
-            throw new NotImplementedException();
+            var cars =  this.db.Cars
+                 .Select(x => new CarViewModel()
+                 {
+                     Id = x.Id.ToString(),
+                     ImageUrl = x.PictureUrl,
+                     PlateNumber = x.PlateNumber,
+                     FixedIssues = x.Issues.Where(i => i.IsFixed == true).Count(),
+                     RemainingIssues = x.Issues.Where(i => i.IsFixed == false).Count(),
+                 })
+                 .ToList();
+
+            return cars.Where(x => x.RemainingIssues > 0).ToList();
         }
         public IEnumerable<CarViewModel> GetAllCarsForCurrentClient(string userId)
         {

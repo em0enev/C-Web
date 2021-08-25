@@ -22,7 +22,7 @@ namespace CarShop.Controllers
         {
             if (this.IsUserSignedIn())
             {
-                this.Redirect(CarsAllPath);
+               return this.Redirect(CarsAllPath);
             }
 
             return this.View();
@@ -49,7 +49,7 @@ namespace CarShop.Controllers
         {
             if (this.IsUserSignedIn())
             {
-                this.Redirect(CarsAllPath);
+                return this.Redirect(CarsAllPath);
             }
 
             return this.View();
