@@ -2,9 +2,6 @@
 using CarShop.ViewModels.Car;
 using SUS.HTTP;
 using SUS.MvcFramework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CarShop.Controllers
 {
@@ -12,6 +9,9 @@ namespace CarShop.Controllers
     {
         private readonly ICarsService carsService;
         private readonly IUsersService usersService;
+        private const string notLoggedInErrMsg = "You are not logged in";
+        private const string notCLientErrMsg = "You are not a client";
+        private const string pathCarsAll = "/Cars/All";
 
         public CarsController(ICarsService carsService, IUsersService usersService)
         {
@@ -27,6 +27,7 @@ namespace CarShop.Controllers
                 var currentClientCars = this.carsService.GetAllCarsForCurrentClient(this.GetUserId());
                 return this.View(currentClientCars);
             }
+
             var carsWithIssues = this.carsService.GetAllCarsWithUnfixedIssues();
 
             return this.View(carsWithIssues);
@@ -37,36 +38,34 @@ namespace CarShop.Controllers
         {
             if (!this.IsUserSignedIn())
             {
-                return this.Error("You are not logged in");
+                return this.Error(notLoggedInErrMsg);
             }
 
             if (usersService.IsUserMechanic(this.GetUserId()))
             {
-                return this.Error("You are not client");
+                return this.Error(notLoggedInErrMsg);
             }
 
             return this.View();
         }
 
         [HttpPost]
-        public HttpResponse Add(AddCarInputModel input) 
+        public HttpResponse Add(AddCarInputModel input)
         {
-
-            
             if (!this.IsUserSignedIn())
             {
-                return this.Error("You are not logged in");
+                return this.Error(notLoggedInErrMsg);
             }
 
             var userId = this.GetUserId();
             if (usersService.IsUserMechanic(userId))
             {
-                return this.Error("You are not client");
+                return this.Error(notCLientErrMsg);
             }
 
             this.carsService.Add(input, userId); ;
 
-            return this.Redirect("/Cars/All");
+            return this.Redirect(pathCarsAll);
         }
     }
 }
