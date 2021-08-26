@@ -10,9 +10,7 @@ namespace CarShop.Controllers
         private readonly IIssuesService issuesService;
         private readonly IUsersService usersService;
         private readonly string carIssuesPath = $"/Issues/CarIssues?CarId=";
-        private const string DeleteIssueErrMsg = "Only clients can delete issues";
         private const string FixIssueErrMsg = "Only mechanics can fix issues";
-        private const string AddCarErrMsg = "Only clients can add cars";
 
         public IssuesController(IIssuesService issuesService, IUsersService usersService)
         {
@@ -23,11 +21,6 @@ namespace CarShop.Controllers
         [HttpGet]
         public HttpResponse Add(string carId)
         {
-            if (usersService.IsUserMechanic(this.GetUserId()))
-            {
-                return this.Error(AddCarErrMsg);
-            }
-
             return this.View(carId);
         }
 
@@ -48,11 +41,6 @@ namespace CarShop.Controllers
         [HttpGet]
         public HttpResponse Delete(string issueId, string carId)
         {
-            if (usersService.IsUserMechanic(this.GetUserId()))
-            {
-                return this.Error(DeleteIssueErrMsg);
-            }
-
             this.issuesService.DeleteIssue(issueId, carId);
 
             return this.Redirect(carIssuesPath + carId);
